@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Disco Player</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jsmediatags/3.9.5/jsmediatags.js" integrity="sha512-fCU+rmH3nS/RJaTSl/ylo/PxwWIZwJts3rfxRylSPqGYMJGPLXvPJGOTF+ECb0K5m9rSXbkCNg2PR7WKGWRTVQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <style>
+    * {
+      color: white;
+      font-family: Verdana, Geneva, Tahoma, sans-serif;
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      width: 100%;
+      background-color: black;
+    }
+    .music_header {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      padding-block: 8px;
+      padding-inline: 18px;
+      background: linear-gradient(140deg, blue, rgb(0 255 255 / 80%), rgb(0 255 255 / 80%), blue, rgb(0 255 255 / 80%), rgb(0 255 255 / 80%), blue);
+      gap: 10px;
+    }
+    .project_heading {
+      align-self: center;
+      font-size: 28px;
+      font-weight: 800;
+      color: white;
+      padding-inline: 10px;
+      box-shadow: 0px 0px 50px black;
+      border: 2.5px solid white;
+      border-radius: 10px;
+    }
+    .project_members_div {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      gap: 50px;
+    }
+    .project_member {
+      flex: 1;
+      text-align: center;
+      font-size: 18px;
+      font-weight: 550;
+      color: white;
+      background-color: rgb(22, 20, 20);
+      box-shadow: 1px 1px 10px black;
+      padding-inline: 10px;
+      padding-block: 5px;
+      border-radius: 10px;
+      align-self: center;
+    }
+    .music_div {
+      display: flex;
+      flex-direction: row;
+      height: 100vh;
+    }
+    .music_main_player {
+      flex: 2.5;
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      padding: 40px;
+      gap: 25px;
+    }
+    .main_music_div {
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-around;
+      gap: 35px;
+    }
+    .music_image {
+      width: 15em;
+      height: 15em;
+      border-radius: 20px;
+      object-fit: fill;
+      align-self: center;
+      border: 2.5px solid whitesmoke;
+      box-shadow: 0px 0px 10px gray;
+    }
+    .music_details {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding-block: 20px;
+      gap: 30px;
+    }
+    .music_title {
+      font-size: 32px;
+      font-weight: 700;
+      border-radius: 10px;
+    }
+    .music_control {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .music_control_buttons_div {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+    .music_buttons {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      background-color: rgb(52, 49, 49);
+      border-radius: 10px;
+      padding-bottom: 5px;
+      padding-inline: 1em;
+      box-shadow: 0px 0px 10px white;
+    }
+    .music_buttons > button {
+      color: black;
+      font-size: 28px;
+      background-color: transparent;
+      outline: none;
+      border: none;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s ease-in-out;
+    }
+    .music_buttons > button:hover {
+      transform: scale(1.25);
+    }
+    .music_album_div {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .music_album {
+      font-size: 17.5px;
+      font-weight: 500;
+    }
+    input[type='range'] {
+      cursor: pointer;
+      appearance: none;
+      height: 0.5em;
+      transition: width 1s linear;
+      background: linear-gradient(140deg, lightblue, cyan, lightblue, cyan, lightblue, cyan, lightblue);
+      border-radius: 100px;
+    }
+    .music_list_div {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      flex-wrap: wrap;
+      word-break: break-all;
+      border-radius: 15px;
+      border: 3.5px solid gray;
+      box-shadow: 0px 0px 10px gray;
+      overflow: auto;
+      padding: 10px;
+      width: 100%;
+      height: 40vh;
+      gap: 10px;
+    }
+    .music_list_detail_box {
+      width: 48%;
+      display: flex;
+      flex-direction: row;
+      background-color: rgb(46, 42, 42);
+      border-radius: 10px;
+      padding: 8px;
+      gap: 20px;
+      transition: background 0.4s linear, transform 0.2s ease-in-out;
+    }
+    .music_list_detail_box:hover {
+      transform: translateY(-1.5px);
+    }
+    .music_list_detail_box:hover {
+      cursor: pointer;
+      background-color: rgba(56, 232, 232, 0.599);
+    }
+    .music_list_detail_img {
+      object-fit: fill;
+      width: 60px;
+      height: 60px;
+      border-radius: 10px;
+      align-self: center;
+    }
+    .music_list_detail_name {
+      color: white;
+      font-weight: 600;
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      font-size: 17.5px;
+      gap: 4px;
+    }
+    .music_list_details_artist {
+      font-size: 16px;
+      font-weight: 500;
+    }
+    @media screen and (max-width: 450px) {
+      .music_list_div {
+        overflow: inherit;
+        height: max-content;
+        flex-wrap: nowrap;
+        flex-direction: column;
+      }
+      .music_list_detail_box {
+        width: 100%;
+      }
+      .music_buttons {
+        background-color: transparent;
+        box-shadow: none;
+      }
+      .main_music_div {
+        gap: 15px;
+        flex-direction: column;
+      }
+      .music_control_buttons_div {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+  <body>
+    <div class="music_header">
+      <span class="project_heading">Disco Player</span>
+      <div class="project_members_div">
+        <span class="project_member">Yuvaraja.M</span>
+        <span class="project_member">Sivasakthibalan.K</span>
+      </div>
+    </div>
+    <div class="music_div">
+      <div class="music_main_player">
+        <div class="main_music_div">
+          <img class="music_image" id="music_image">
+          <div class="music_details">
+            <div style="display: flex; gap: 10px; flex-direction: column;">
+              <span class="music_title" id="music_title">Track is Loading</span>
+              <div class="music_album_div">
+                <span class="music_album" id="music_album"></span>
+                <span class="music_album" id="music_artist"></span>
+              </div>
+            </div>
+            <div class="music_control_buttons_div">
+              <div style="flex: 0.4;"></div>
+              <div class="music_buttons">
+                <button onclick="backward()">⏮️</button>
+                <button id="play_pause" onclick="playPause()">▶️</button>
+                <button onclick="forward()">⏭️</button>
+              </div>
+              <div style="flex: 1; display: flex; justify-content: flex-end; gap: 10px;">
+                <div style="display: flex; flex-direction: column; gap: 4px; font-size: 16px; align-items: center; background-color: rgb(52, 49, 49); border-radius: 10px; padding-block: 6px; padding-inline: 10px; box-shadow: 0px 0px 10px white;">
+                  <span style="color: white" id="current_volume">Volume: 100</span>
+                  <input id="volume_control" type="range" min="0" max="100" step="1" value="100" onchange="adjustVolume()">
+                </div>
+              </div>
+            </div>  
+          </div>
+        </div>
+        <div class="music_control">
+          <input class="music_progress" id="music_control" type="range" min="0" max="100" step="0.1" value="0" onchange="seekPlayer()">
+        </div>
+        <div class="music_list_div" id="music_list_div"></div>
+        <audio id="music_player" playing="progressMusic()"></audio>
+      </div>
+    </div>
+    <script>
+      const music_player = document.getElementById('music_player')
+      const volume_control = document.getElementById('volume_control')
+      const music_control = document.getElementById('music_control')
+      const play_pause = document.getElementById('play_pause')
+      const music_list_div = document.getElementById('music_list_div')
+      const current_volume = document.getElementById('current_volume')
+      const timer = ms => new Promise(res => setTimeout(res, ms))
+      var current_song = 0
+      const ip = `${document.location.origin}/music`
+      const music_list = [
+        'AgaNaga.mp3',
+        'MongilThotam.mp3',
+        'MunbeVaaVaa.mp3',
+        'PalaPalakura.mp3',
+        'Ambikapathy.mp3',
+        'KannadasanKaraikudi.mp3',
+        'NaaReady.mp3',
+        'NakkaMukka.mp3',
+        'Bheem.mp3',
+        'Pasoori.mp3'
+      ]
+      music_list.map((music, index) => {
+        var music_div = document.createElement('div')
+        music_div.setAttribute('onclick', `callMusic(${index})`)
+        var music_icon = document.createElement('img')
+        var music_name_box = document.createElement('div')
+        var music_name = document.createElement('span')
+        var music_artist = document.createElement('span')
+        music_artist.className = 'music_list_details_artist'
+        music_div.className = 'music_list_detail_box'
+        music_name_box.className = 'music_list_detail_name'
+        jsmediatags.read(`${ip}/${music}`, {
+          onSuccess: function(tag) {
+            var tags = tag.tags;
+            var image = tags.picture;
+            if (image) {
+              var Imgurl = URL.createObjectURL(new Blob([new Uint8Array(image.data)], { type: image.format }));
+              music_icon.setAttribute('src', Imgurl)
+              music_icon.className = 'music_list_detail_img'
+              music_name.innerText = tags.title
+              music_artist.innerText = tags.artist
+            } else {
+              music_icon.setAttribute('src', `${ip}/default.jpg`);
+              music_icon.className = 'music_list_detail_img'
+              music_name.innerText = music
+              music_artist.innerText = music
+            }
+          }
+        })
+        music_div.appendChild(music_icon)
+        music_name_box.appendChild(music_name)
+        music_name_box.appendChild(music_artist)
+        music_div.appendChild(music_name_box)
+        music_list_div.appendChild(music_div)
+      })
+      function loadMusic() {
+        jsmediatags.read(`${ip}/${music_list[current_song]}`, {
+          onSuccess: function(tag) {
+            var tags = tag.tags;
+            var image = tags.picture;
+            if (image) {
+              var url = URL.createObjectURL(new Blob([new Uint8Array(image.data)], { type: image.format }));
+              music_player.setAttribute('src', `${ip}/${music_list[current_song]}`) 
+              document.getElementById('music_title').innerText = tags.title;
+              document.getElementById('music_album').innerText = tags.album;
+              document.getElementById('music_artist').innerText = tags.artist;
+              document.getElementById('music_image').setAttribute('src', url);
+              document.getElementById('music_image').className = 'music_image'
+            } else {
+              music_player.setAttribute('src', `${ip}/${music_list[current_song]}`) 
+              document.getElementById('music_title').innerText = music_list[current_song]
+              document.getElementById('music_album').innerText = music_list[current_song]
+              document.getElementById('music_artist').innerText = music_list[current_song]
+              document.getElementById('music_image').setAttribute('src', `${ip}/default.jpg`);
+              document.getElementById('music_image').className = 'music_image'
+            }
+          }
+        });
+        play_pause.innerText = '▶️'
+        music_control.value= 0
+      }
+      function adjustVolume() {
+        current_volume.innerText = `Volume: ${volume_control.value}`
+        music_player.volume = volume_control.value / 100
+      }
+      function playPause() {
+        if (music_player.paused) {
+          music_player.play()
+          progressMusic()
+          play_pause.innerText = '⏸️'
+        } else {
+          music_player.pause()
+          play_pause.innerText = '▶️'
+        }
+      }
+      function seekPlayer() {
+        music_player.currentTime = music_player.duration * (parseFloat(music_control.value) / 100)
+      }
+      async function progressMusic() {
+        while ((!music_player.paused) && (music_player.currentTime < music_player.duration)) {
+          music_control.value = (music_player.currentTime / music_player.duration) * 100;
+          await timer(650);
+        }
+      }
+      function forward() {
+        if ((current_song + 1) < music_list.length) {
+          current_song += 1
+        } else {
+          current_song = 0
+        }
+        loadMusic()
+      }
+      function backward() {
+        if ((current_song === 0)) {
+          current_song = music_list.length - 1
+        } else {
+          current_song -= 1
+        }
+        loadMusic()
+      }
+      function callMusic(music_index) {
+        current_song = music_index
+        loadMusic()
+      }
+      loadMusic()
+    </script>
+  </body>
+</html>
