@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Disco Player</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jsmediatags/3.9.5/jsmediatags.js" integrity="sha512-fCU+rmH3nS/RJaTSl/ylo/PxwWIZwJts3rfxRylSPqGYMJGPLXvPJGOTF+ECb0K5m9rSXbkCNg2PR7WKGWRTVQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="./jsmediatags.js" integrity="sha512-fCU+rmH3nS/RJaTSl/ylo/PxwWIZwJts3rfxRylSPqGYMJGPLXvPJGOTF+ECb0K5m9rSXbkCNg2PR7WKGWRTVQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <style>
     * {
       color: white;
@@ -25,7 +25,7 @@
       justify-content: space-around;
       padding-block: 8px;
       padding-inline: 18px;
-      background: linear-gradient(140deg, blue, rgb(0 255 255 / 80%), rgb(0 255 255 / 80%), blue, rgb(0 255 255 / 80%), rgb(0 255 255 / 80%), blue);
+      background: linear-gradient(140deg, rgba(0, 0, 255, 80%), rgb(0 255 255 / 80%), rgb(0 255 255 / 80%), rgba(0, 0, 255, 80%), rgb(0 255 255 / 80%), rgb(0 255 255 / 80%), rgba(0, 0, 255, 80%));
       gap: 10px;
     }
     .project_heading {
@@ -150,8 +150,8 @@
       appearance: none;
       height: 0.5em;
       transition: width 1s linear;
-      background: linear-gradient(140deg, lightblue, cyan, lightblue, cyan, lightblue, cyan, lightblue);
       border-radius: 100px;
+      background: linear-gradient(140deg, rgba(0, 0, 255, 80%), rgb(0 255 255 / 80%), rgb(0 255 255 / 80%), rgba(0, 0, 255, 80%), rgb(0 255 255 / 80%), rgb(0 255 255 / 80%), rgba(0, 0, 255, 80%));
     }
     .music_list_div {
       display: flex;
@@ -168,6 +168,9 @@
       height: 40vh;
       gap: 10px;
     }
+    .music_list_div::-webkit-scrollbar {
+      display: none;
+    }
     .music_list_detail_box {
       width: 48%;
       display: flex;
@@ -183,7 +186,7 @@
     }
     .music_list_detail_box:hover {
       cursor: pointer;
-      background-color: rgba(56, 232, 232, 0.599);
+      background: linear-gradient(140deg, rgba(0, 0, 255, 50%), rgb(0 255 255 / 50%), rgb(0 255 255 / 50%), rgba(0, 0, 255, 50%), rgb(0 255 255 / 50%), rgb(0 255 255 / 50%), rgba(0, 0, 255, 50%));
     }
     .music_list_detail_img {
       object-fit: fill;
@@ -206,6 +209,10 @@
       font-weight: 500;
     }
     @media screen and (max-width: 450px) {
+      .project_members_div {
+        gap: 5px;
+        flex-direction: column;
+      }
       .music_list_div {
         overflow: inherit;
         height: max-content;
@@ -233,8 +240,9 @@
     <div class="music_header">
       <span class="project_heading">Disco Player</span>
       <div class="project_members_div">
-        <span class="project_member">Yuvaraja.M</span>
         <span class="project_member">Sivasakthibalan.K</span>
+        <span class="project_member">Yuvaraja.M</span>
+        <span class="project_member">Thamizharasan.R</span>
       </div>
     </div>
     <div class="music_div">
